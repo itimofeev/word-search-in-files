@@ -5,6 +5,8 @@ import (
 	"sync"
 )
 
+type FileName string
+
 type mapDictionary struct {
 	store map[string]map[FileName]struct{}
 	mu    sync.Mutex

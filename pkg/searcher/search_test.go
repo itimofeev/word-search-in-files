@@ -57,6 +57,17 @@ func TestSearcher_Search(t *testing.T) {
 			wantFiles: nil,
 			wantErr:   true,
 		},
+		{
+			name: "correctly works with utf",
+			fields: fields{
+				FS: fstest.MapFS{
+					"file1.txt": {Data: []byte("Le bonheur n'est pas quelque chose de prêt à l'emploi, il vient de vos propres actions.")},
+				},
+			},
+			args:      args{word: "prêt"},
+			wantFiles: []string{"file1.txt"},
+			wantErr:   false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
