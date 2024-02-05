@@ -31,7 +31,7 @@ func TestSearcher_Search(t *testing.T) {
 				},
 			},
 			args:      args{word: "World"},
-			wantFiles: []string{"file1", "file3"},
+			wantFiles: []string{"file1.txt", "file3.txt"},
 			wantErr:   false,
 		},
 	}

@@ -2,6 +2,7 @@ package dir
 
 import "io/fs"
 
+// FilesFS returns list of files in directory
 func FilesFS(fsys fs.FS, dir string) ([]string, error) {
 	if dir == "" {
 		dir = "."
