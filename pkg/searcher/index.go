@@ -5,31 +5,37 @@ import (
 	"sync"
 )
 
-type FileName string
+type fileNameType string
 
+// mapIndex is a structure that stores map of words and list of files that contain this word.
+// Average complexity of search is O(1).
 type mapIndex struct {
-	store map[string]map[FileName]struct{}
-	mu    sync.Mutex
+	store map[string]map[fileNameType]struct{}
+
+	// mu protects store from concurrent map access
+	mu sync.Mutex
 }
 
 func newMapIndex() *mapIndex {
 	return &mapIndex{
-		store: map[string]map[FileName]struct{}{},
+		store: map[string]map[fileNameType]struct{}{},
 	}
 }
 
+// Add adds word to index.
 func (d *mapIndex) Add(word, fileName string) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
 	fileNamesMap, ok := d.store[word]
 	if !ok {
-		fileNamesMap = map[FileName]struct{}{}
+		fileNamesMap = map[fileNameType]struct{}{}
 		d.store[word] = fileNamesMap
 	}
-	fileNamesMap[FileName(fileName)] = struct{}{}
+	fileNamesMap[fileNameType(fileName)] = struct{}{}
 }
 
+// FilesContainWord returns list of files that contain `word`.
 func (d *mapIndex) FilesContainWord(word string) []string {
 	d.mu.Lock()
 	defer d.mu.Unlock()

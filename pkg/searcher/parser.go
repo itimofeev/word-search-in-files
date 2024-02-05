@@ -13,6 +13,7 @@ import (
 	"word-search-in-files/pkg/internal/dir"
 )
 
+// parser parses list of files to index.
 type parser struct {
 	concurrency int
 }
@@ -27,6 +28,7 @@ func newParser(concurrency int) parser {
 	}
 }
 
+// ParseFilesToIndex read into memory all the files with some concurrency and fills index.
 func (p parser) ParseFilesToIndex(f fs.FS, index *mapIndex) error {
 	listOfFiles, err := dir.FilesFS(f, ".")
 	if err != nil {
@@ -63,6 +65,7 @@ func (p parser) ParseFilesToIndex(f fs.FS, index *mapIndex) error {
 	return nil
 }
 
+// readFileContent returns content of file converted to string.
 func readFileContent(f fs.FS, fileName string) (string, error) {
 	open, err := f.Open(fileName)
 	if err != nil {

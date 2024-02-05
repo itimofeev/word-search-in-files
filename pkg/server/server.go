@@ -51,7 +51,7 @@ func (s *Server) initServerHandler() http.Handler {
 	return mux
 }
 
-// Serve starts HTTP server and stops it when the provided context is canceled.
+// Serve starts HTTP server and gracefully stops it when the provided context is canceled.
 func (s *Server) Serve(ctx context.Context) error {
 	errChan := make(chan error, 1)
 	defer close(errChan)
