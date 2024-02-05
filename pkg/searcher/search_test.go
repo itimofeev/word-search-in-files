@@ -1,6 +1,7 @@
 package searcher
 
 import (
+	"errors"
 	"io/fs"
 	"reflect"
 	"testing"
@@ -34,6 +35,28 @@ func TestSearcher_Search(t *testing.T) {
 			wantFiles: []string{"file1.txt", "file3.txt"},
 			wantErr:   false,
 		},
+		{
+			name: "word not found in files",
+			fields: fields{
+				FS: fstest.MapFS{
+					"file1.txt": {Data: []byte("World")},
+					"file2.txt": {Data: []byte("World1")},
+					"file3.txt": {Data: []byte("Hello World")},
+				},
+			},
+			args:      args{word: "hello"},
+			wantFiles: nil,
+			wantErr:   false,
+		},
+		{
+			name: "error on reading file",
+			fields: fields{
+				FS: errorFS{},
+			},
+			args:      args{word: "hello"},
+			wantFiles: nil,
+			wantErr:   true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -50,4 +73,10 @@ func TestSearcher_Search(t *testing.T) {
 			}
 		})
 	}
+}
+
+type errorFS struct{}
+
+func (e errorFS) Open(name string) (fs.File, error) {
+	return nil, errors.New("error on reading file")
 }
