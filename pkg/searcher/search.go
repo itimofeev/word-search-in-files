@@ -10,13 +10,13 @@ type Searcher struct {
 
 // Search returns list of files that contain `word`
 func (s *Searcher) Search(word string) (files []string, err error) {
-	dict := newMapDictionary()
+	index := newMapIndex()
 	parser := newParser(10)
 
-	err = parser.ParseFilesToDict(s.FS, dict)
+	err = parser.ParseFilesToIndex(s.FS, index)
 	if err != nil {
 		return nil, err
 	}
 
-	return dict.FilesContainWord(word), nil
+	return index.FilesContainWord(word), nil
 }

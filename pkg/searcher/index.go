@@ -7,18 +7,18 @@ import (
 
 type FileName string
 
-type mapDictionary struct {
+type mapIndex struct {
 	store map[string]map[FileName]struct{}
 	mu    sync.Mutex
 }
 
-func newMapDictionary() *mapDictionary {
-	return &mapDictionary{
+func newMapIndex() *mapIndex {
+	return &mapIndex{
 		store: map[string]map[FileName]struct{}{},
 	}
 }
 
-func (d *mapDictionary) Add(word, fileName string) {
+func (d *mapIndex) Add(word, fileName string) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
@@ -30,7 +30,7 @@ func (d *mapDictionary) Add(word, fileName string) {
 	fileNamesMap[FileName(fileName)] = struct{}{}
 }
 
-func (d *mapDictionary) FilesContainWord(word string) []string {
+func (d *mapIndex) FilesContainWord(word string) []string {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 

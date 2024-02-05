@@ -27,7 +27,7 @@ func newParser(concurrency int) parser {
 	}
 }
 
-func (p parser) ParseFilesToDict(f fs.FS, dict *mapDictionary) error {
+func (p parser) ParseFilesToIndex(f fs.FS, index *mapIndex) error {
 	listOfFiles, err := dir.FilesFS(f, ".")
 	if err != nil {
 		return err
@@ -50,7 +50,7 @@ func (p parser) ParseFilesToDict(f fs.FS, dict *mapDictionary) error {
 			}
 
 			for _, word := range strings.FieldsFunc(fileContent, isNotLetter) {
-				dict.Add(word, fileName)
+				index.Add(word, fileName)
 			}
 			return nil
 		})
